@@ -4,13 +4,21 @@ import { Navigate } from 'react-router-dom'; // Import the Navigate component
 import { connect } from 'react-redux'
 import axios from 'axios';
 import Spinner from '../../../spinner/Spinner'
+import { resetIngredients } from '../../../../redux/actionCreator';
 const mapStateToProps = (state) => {
     return {
         ingredients: state.ingredients,
         totalPrice: state.totalPrice,
-        purchasable: state.purchasable
+        purchasable: state.purchasable,
+
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        resetIngredients: () => dispatch(resetIngredients()),
+    }
+} //After submittion the Order EveryTime it will reset The previous Order Settting
 
 class Checkout extends Component {
     state = {
@@ -40,6 +48,9 @@ class Checkout extends Component {
         });
     }
 
+
+
+
     submitHandle = () => {
         this.setState({
             isLoading: true,
@@ -53,6 +64,7 @@ class Checkout extends Component {
         axios.post("https://burger-builder-57520-default-rtdb.firebaseio.com/orders.json", order) //jokhoni firebase e kaj korbo tokhn key er shes .json use korte hobe
             .then(response => {
                 if (response.status === 200) {
+
                     this.setState(
                         {
                             isLoading: false,
@@ -60,6 +72,7 @@ class Checkout extends Component {
                             modalMsg: 'Order Places Succesfully'
                         }
                     )
+                    this.props.resetIngredients();
                 } else {
                     this.setState(
                         {
@@ -69,6 +82,7 @@ class Checkout extends Component {
                         }
                     )
                 }
+
             })
             .catch(err => {
                 this.setState(
@@ -122,5 +136,5 @@ class Checkout extends Component {
         )
     }
 }
-s
-export default connect(mapStateToProps)(Checkout);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
