@@ -122,5 +122,5 @@ class Checkout extends Component {
         )
     }
 }
-
+s
 export default connect(mapStateToProps)(Checkout);
