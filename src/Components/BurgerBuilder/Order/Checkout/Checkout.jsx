@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import axios from 'axios';
 import Spinner from '../../../spinner/Spinner'
 import { resetIngredients } from '../../../../redux/actionCreator';
+import { Formik } from 'formik';
 const mapStateToProps = (state) => {
     return {
         ingredients: state.ingredients,
@@ -122,6 +123,7 @@ class Checkout extends Component {
 
             </form>
             {this.state.onClickCheck && <Navigate to='/' replace={true} />}
+
         </div>)
         return (
             <div>

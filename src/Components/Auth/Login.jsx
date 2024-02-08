@@ -1,7 +1,28 @@
 import React, { Component } from 'react'
 import { Formik } from 'formik'
+import { auth } from '../../redux/authActionCreator'
+import { connect } from 'react-redux'
+
+const mapDispatchToProps = dispatch => {
+    return {
+        auth: (email, password, mode) => dispatch(auth(email, password, mode))
+    }
+}
 
 class Login extends Component {
+
+    state = {
+        mode: 'Sign Up',
+    }
+
+    swtichModeHandler = () => {
+
+        this.setState({
+            mode: this.state.mode === "Sign Up" ? "Login" : "Sign Up"
+        })
+
+    }
+
     render() {
         return (
             <div >
@@ -14,7 +35,8 @@ class Login extends Component {
                 }
                     onSubmit={
                         (values) => {
-                            console.log(values);
+                            this.props.auth(values.email, values.password, this.state.mode);
+
                         }
                     }
                     validate={(values) => {
@@ -31,10 +53,12 @@ class Login extends Component {
 
                         }
 
-                        if (!values.passwordConfirm) {
-                            errors.passwordConfirm = 'Required';
-                        } else if (values.password !== values.passwordConfirm) {
-                            errors.passwordConfirm = "Password field does Not Matched"
+                        if (this.state.mode === "Sign Up") {
+                            if (!values.passwordConfirm) {
+                                errors.passwordConfirm = 'Required';
+                            } else if (values.password !== values.passwordConfirm) {
+                                errors.passwordConfirm = "Password field does Not Matched"
+                            }
                         }
 
                         return errors;
@@ -50,6 +74,16 @@ class Login extends Component {
 
                             }
                         }>
+                            <button style={{
+                                width: '100%',
+                                backgroundColor: "#D70F64",
+                                color: "white"
+                            }} className='btn btn-lg' onClick={this.swtichModeHandler}>
+                                Switch To {this.state.mode === "Sign Up" ? "Login" : "Sign Up"}
+                            </button>
+                            <br />
+                            <br />
+
                             <form onSubmit={handleSubmit}>
                                 <input
                                     name='email'
@@ -68,15 +102,19 @@ class Login extends Component {
                                     onChange={handleChange} />
                                 <span style={{ color: 'red' }}>{errors.password}</span>
                                 <br />
-                                <input
-                                    name='passwordConfirm'
-                                    placeholder='Confirm Password'
-                                    className='form-control'
-                                    value={values.passwordConfirm}
-                                    onChange={handleChange} />
-                                <span style={{ color: 'red' }}>{errors.passwordConfirm}</span>
-                                <br />
-                                <button type='submit' className='btn btn-success'>Sign Up</button>
+                                {this.state.mode === "Sign Up" ? <div>
+                                    <input
+                                        name='passwordConfirm'
+                                        placeholder='Confirm Password'
+                                        className='form-control'
+                                        value={values.passwordConfirm}
+                                        onChange={handleChange} />
+                                    <span style={{ color: 'red' }}>{errors.passwordConfirm}</span>
+                                    <br />
+
+                                </div> : null}
+
+                                <button type='submit' className='btn btn-success'>{this.state.mode === "Sign Up" ? "Sign Up" : "Login"}</button>
 
                             </form>
                         </div>
@@ -88,4 +126,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
