@@ -1,4 +1,4 @@
-#How to Run
+# How to Run
 - clone this github project link.
   https://github.com/Ashraf-ul-I/BurgerBuilder_Project.git''
 - in vs code terminal
@@ -11,3 +11,11 @@
 - - Then go to `src->` `redux->` `actionCreators` after going to this files
   - Replace the fetchOrder links to your links of your prohect in firebase.
   - Then you are ready to save any order.
+# Firebase Auth 
+ - Now you have to go in the firebase authentication and then get your api key.
+ - because without api key you can not login or logout through your website .
+ - after getting the api key just replace its from the authActionCreators `API_KEY`
+ - Now you are all set to to Enjoy the App.
+
+# Happy Coding 
+- - - # Thanks to visit my REPO.
